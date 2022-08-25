@@ -41,7 +41,7 @@ function App() {
         numberOfRuns,
       });
 
-      const randomTimeArray = randomTimeSeries(fromTime, toTime, numberOfRuns);
+      const randomTimeArray = await randomTimeSeries(fromTime, toTime, numberOfRuns);
 
       await axios.delete(`${apiUrl}/appointmentsSchedule-delete`);
 
