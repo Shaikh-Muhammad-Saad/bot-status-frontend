@@ -45,16 +45,18 @@ function App() {
 
       await axios.delete(`${apiUrl}/appointmentsSchedule-delete`);
 
-      await axios.post(`${apiUrl}/appointmentsSchedule-create`, {
+     const response= await axios.post(`${apiUrl}/appointmentsSchedule-create`, {
         randomTimeArray,
       });
 
-      fetchBotRunIntervals();
-      await fetchTableData();
-      await fetchTableData();
-      await fetchTableData();
-      await fetchTableData();
-      await fetchTableData();
+      if(response){
+        fetchBotRunIntervals();
+        await fetchTableData();
+        await fetchTableData();
+        await fetchTableData();
+        await fetchTableData();
+        await fetchTableData();
+      }
       window.location.reload();
     } catch (error) {
       console.log(error);
