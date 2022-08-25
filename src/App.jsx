@@ -5,6 +5,8 @@ import { apiUrl } from "./globals/globalVariables";
 import URLcomponent from "./components/URLcomponent";
 import { randomTimeSeries } from "./globals/globalFunctions";
 import ReactLoading from "react-loading";
+import cogoToast from "cogo-toast";
+import {Helmet} from "react-helmet";
 
 function App() {
   const [fromTime, setFromTime] = useState();
@@ -21,8 +23,8 @@ function App() {
     fetchTableData();
   }, []);
 
-  console.log(tableData);
-  console.log(botRunIntervals);
+  // console.log(tableData);
+  // console.log(botRunIntervals);
 
   const submitForm = async (e) => {
     try {
@@ -59,7 +61,8 @@ function App() {
       await fetchTableData();
       await fetchTableData();
       await fetchTableData();
-      window.location.reload();
+      cogoToast.success("Please refresh results after 30 seconds to get updated data", {hideAfter:5})
+      // window.location.reload();
     } catch (error) {
       console.log(error);
     } finally {
@@ -86,6 +89,9 @@ function App() {
 
   return (
     <>
+      <Helmet>
+        <title>Smile Stories</title>
+      </Helmet>
       {/* header */}
       <div className="w-full h-[50px] bg-blue-500 flex items-center">
         <button className="mx-2 bg-orange-200 border-2 border-orange-500 px-2 font-bold">
@@ -141,7 +147,6 @@ function App() {
               <div className="mb-4">
                 <label
                   className="block text-gray-700 text-md mb-2 font-bold border-slate-400 pb-2"
-                  for="username"
                 >
                   {`Current interval: ${botRunIntervals?.fromTime} - ${botRunIntervals?.toTime}`}
                 </label>
@@ -150,13 +155,12 @@ function App() {
               <div className="mb-4">
                 <label
                   className="block text-gray-700 text-sm mb-2 border-b border-slate-400 pb-2"
-                  for="username"
                 >
                   Set interval
                 </label>
               </div>
               <div className="mb-4">
-                <label class="block text-gray-700 text-sm mb-2" for="username">
+                <label className="block text-gray-700 text-sm mb-2" >
                   From {"(Time)"}
                 </label>
                 <input
@@ -172,7 +176,6 @@ function App() {
               <div className="mb-4">
                 <label
                   className="block text-gray-700 text-sm mb-2"
-                  for="username"
                 >
                   To {"(Time)"}
                 </label>
@@ -186,7 +189,7 @@ function App() {
                 />
               </div>
               <div className="mb-4">
-                <label class="block text-gray-700 text-sm mb-2" for="username">
+                <label className="block text-gray-700 text-sm mb-2" >
                   Number of runs
                 </label>
                 <input
@@ -224,6 +227,7 @@ function App() {
           <table className="w-full border-collapse border border-slate-400 ...">
             <thead>
               <td className=""></td>
+              <td className=""></td>
               <td className="text-center text-lg font-bold py-2">
                 Intervals set for today
               </td>
@@ -232,10 +236,10 @@ function App() {
 
             <tbody>
               <tr>
-                <td className="p-4 text-center border border-slate-400 w-[30%]">
+                <td className="p-4 text-center border border-slate-400 w-[15%]">
                   Time
                 </td>
-                <td className="p-4 text-center border border-slate-400 w-[30%]">
+                <td className="p-4 text-center border border-slate-400 w-[20%]">
                   Status
                 </td>
                 <td className="p-4  text-center border border-slate-400 w-[30%]">
@@ -248,12 +252,11 @@ function App() {
 
               {tableData?.map((index) => {
                 return (
-                  <>
-                    <tr>
-                      <td className="p-4 text-center border border-slate-400 w-[30%]">
+                    <tr key={index.time}>
+                      <td className="p-4 text-center border border-slate-400 w-[15%]">
                         {index.time.slice(0, 5)}
                       </td>
-                      <td className="p-4 text-center border border-slate-400 w-[30%]">
+                      <td className="p-4 text-center border border-slate-400 w-[20%]">
                         {index.status == "complete" ? (
                           <button className="px-3 py-1 bg-green-200 border-2 border-green-400">
                             Complete
@@ -273,7 +276,7 @@ function App() {
                         {index.appointmentdateTime}
                       </td>
                     </tr>
-                  </>
+                  
                 );
               })}
             </tbody>
