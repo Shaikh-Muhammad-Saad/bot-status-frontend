@@ -15,8 +15,8 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    fetchTableData();
     fetchBotRunIntervals();
+    fetchTableData();
   }, []);
 
   console.log(tableData);
@@ -41,22 +41,21 @@ function App() {
         numberOfRuns,
       });
 
-      const randomTimeArray = await randomTimeSeries(fromTime, toTime, numberOfRuns);
+      const randomTimeArray = await randomTimeSeries(
+        fromTime,
+        toTime,
+        numberOfRuns
+      );
 
       await axios.delete(`${apiUrl}/appointmentsSchedule-delete`);
 
-     const response= await axios.post(`${apiUrl}/appointmentsSchedule-create`, {
+      await axios.post(`${apiUrl}/appointmentsSchedule-create`, {
         randomTimeArray,
       });
 
-      if(response){
-        fetchBotRunIntervals();
-        await fetchTableData();
-        await fetchTableData();
-        await fetchTableData();
-        await fetchTableData();
-        await fetchTableData();
-      }
+      await fetchBotRunIntervals();
+      await fetchTableData();
+
       window.location.reload();
     } catch (error) {
       console.log(error);
@@ -67,8 +66,10 @@ function App() {
 
   const fetchTableData = async () => {
     try {
-      const response = await axios.get(`${apiUrl}/appointmentsSchedule`);
-      setTableData(response.data);
+      while (tableData.length !== botRunIntervals.numberOfRuns) {
+        const response = await axios.get(`${apiUrl}/appointmentsSchedule`);
+        setTableData(response.data);
+      }
     } catch (error) {
       console.log(error);
     }
