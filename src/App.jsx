@@ -51,7 +51,7 @@ function App() {
 
       fetchBotRunIntervals();
       await fetchTableData();
-      await fetchTableData();
+      window.location.reload();
     } catch (error) {
       console.log(error);
     } finally {
