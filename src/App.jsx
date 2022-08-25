@@ -16,6 +16,8 @@ function App() {
 
   useEffect(() => {
     fetchBotRunIntervals();
+  }, []);
+  useEffect(() => {
     fetchTableData();
   }, []);
 
@@ -55,7 +57,8 @@ function App() {
 
       await fetchBotRunIntervals();
       await fetchTableData();
-
+      await fetchTableData();
+      await fetchTableData();
       window.location.reload();
     } catch (error) {
       console.log(error);
@@ -66,10 +69,8 @@ function App() {
 
   const fetchTableData = async () => {
     try {
-      while (tableData.length !== botRunIntervals.numberOfRuns) {
-        const response = await axios.get(`${apiUrl}/appointmentsSchedule`);
-        setTableData(response.data);
-      }
+      const response = await axios.get(`${apiUrl}/appointmentsSchedule`);
+      setTableData(response.data);
     } catch (error) {
       console.log(error);
     }
